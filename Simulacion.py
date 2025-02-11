@@ -3,6 +3,8 @@ import numpy as np
 from Casa import Casa
 
 class Simulacion:
+    
+    #Constructor Simulacion
     def __init__(self):
         self.reloj = 0
         self.casa = None
@@ -12,25 +14,25 @@ class Simulacion:
         self.cont_suscripciones = 0
         self.resultados = []
 
+    #Funcion "Simular" simula el proceso de atencion y venta de las casas en un determinado tiempo 
     def simular(self, horas, gasto):
-        fin_sim = horas * 60  # Convertimos la simulación en minutos
+        fin_sim = horas * 60  
         self.reloj = 0
         fila = 0
-        self.casa = Casa()  # Se instancia la primera casa
+        #Proceso la primer casa
+        self.casa = Casa() 
         nuevo_reloj = self.procesar_casa(fila, gasto, self.reloj)  
         self.reloj = nuevo_reloj
 
         while self.reloj < fin_sim:
             fila += 1
-            self.casa = Casa()  # Nueva casa en cada iteración
-            # Procesamos la siguiente casa y actualizamos el reloj con el nuevo valor
+            # Nueva casa en cada iteración
+            self.casa = Casa()
             nuevo_reloj = self.procesar_casa(fila, gasto, self.reloj)
-        
-            # Aseguramos que el reloj avance con el valor de 'fin_atencion' de la casa procesada
-            self.reloj = nuevo_reloj  # Actualizamos el reloj con el 'fin_atencion' de la casa
+            self.reloj = nuevo_reloj 
 
-        prob_ventas = round(self.cont_ventas / fila, 2) if fila > 0 else 0
-        punto_c = round((self.cont_suscripciones / fila) * 10000, 0) if fila > 0 else 0
+        prob_ventas = round(self.cont_ventas / fila, 2) if fila > 0 else 0 #Calcula la proporción de ventas sobre el total de casas procesadas.
+        punto_c = round((self.cont_suscripciones / fila) * 10000, 0) if fila > 0 else 0 #Calcula un índice de suscripciones, multiplicándolo por 10,000.
     
         return pd.DataFrame(self.resultados, columns=[
             "Nro Fila", "Reloj", "RND Atencion", "Atencion", "RND Genero", "Genero", 
@@ -39,6 +41,7 @@ class Simulacion:
             "Costo Acumulado", "Contador Visitas", "Contador Ventas", "Contador Suscripciones"
         ]), prob_ventas, punto_c
     
+    #Funcion "procesar_casa"  procesa una casa en la simulación utilizando las funciones de Casa
     def procesar_casa(self, fila, gasto, reloj: int):
         atencion, fin_atencion, rnd_atencion = self.casa.atencion(reloj)
         genero, rnd_genero = self.casa.genero(atencion)
@@ -49,12 +52,14 @@ class Simulacion:
         else:
             rnd_venta, venta, rnd_suscripciones, cantidad_suscripciones, rndTiempoAtencion, tiempo_atencion, fin_venta = "NO", 0, 0 , 0, 0, 0, 0
     
+        #Acumuladores
         self.acu_ganancias += self.casa.utilidad * cantidad_suscripciones
         self.acu_costo += gasto
 
+        #Contadores
         if venta:
             self.cont_ventas += 1
-            self.cont_suscripciones += cantidad_suscripciones  # Asegúrate de sumar correctamente
+            self.cont_suscripciones += cantidad_suscripciones  
 
         self.resultados.append([
             fila, self.reloj, rnd_atencion, atencion, rnd_genero, genero, 
