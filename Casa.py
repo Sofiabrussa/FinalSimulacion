@@ -20,13 +20,13 @@ class Casa:
         self.cantidad_horas_simular = cantidad_horas_simular
         
     def atencion (self, reloj: float):
-        rnd_atencion = round(random.random(), 2) #Genero random para la atencion 
-        print(f"[DEBUG] Reloj: {reloj}, RND Atencion: {rnd_atencion}")  # <-- Quitar esto, es para depurar
+        rnd_atencion = round(random.uniform(0, 0.99), 2)
         atencion = False
         fin_atencion = 0
         
         if rnd_atencion <= self.prob_atencion: 
             atencion = "SI"
+            fin_atencion = 0
         else:
             atencion = "NO"
             fin_atencion = reloj + self.tiempo_no_atencion
@@ -35,7 +35,7 @@ class Casa:
     
     def genero (self, atencion: str ):
         if atencion == "SI":
-            rnd_genero = round(random.random(), 2) #Genero rnd de genero
+            rnd_genero = round(random.uniform(0, 0.99), 2) #Genero rnd de genero
             genero = ""
             
             if rnd_genero <= self.prob_genero:
@@ -44,7 +44,7 @@ class Casa:
                 genero = "HOMBRE"
             
             return genero, rnd_genero
-        return None, None  #Aseguraro de devolver algo
+        return " ", 0  #Aseguraro de devolver algo
     
     def tiempoAtencion(self, venta: str, cantidad_suscripciones: int):
         if venta == "NO":
@@ -58,7 +58,7 @@ class Casa:
     
     def venta (self, genero: str, reloj: float):
         if genero:
-            rnd_venta = round(random.random(), 2) #Genero rnd de venta
+            rnd_venta = round(random.uniform(0, 0.99), 2) #Genero rnd de venta
             venta = False
             fin_venta = 0
             rnd_suscripciones = 0
@@ -88,7 +88,7 @@ class Casa:
         else:
             return 0
         
-        rnd_suscripciones = round(random.random(), 2)
+        rnd_suscripciones = round(random.uniform(0, 0.99), 2)
         
         if rnd_suscripciones <= frecuencias[0]: 
             return 1, rnd_suscripciones
@@ -104,18 +104,3 @@ class Casa:
         
         
     
-    
-""" # Pruebas
-casa = Casa()
-atencion, fin_atencion, rnd_atencion = casa.atencion(reloj=10)  
-genero, rnd_genero = casa.genero(atencion) 
-
-# Si la atención es NO, el fin_atencion ya está definido. Si es SI, se usa Venta.
-if atencion == "SI":
-    venta, fin_venta, rnd_venta, cant_suscripciones, rnd_suscripciones, rndTiempoAtencion, tiempo_atencion = casa.Venta(genero, reloj=10)
-    fin_atencion = fin_venta 
-else:
-    venta, rnd_venta, cant_suscripciones, rnd_suscripciones, rndTiempoAtencion, tiempo_atencion = "NO", 0, 0, 0, 0, 0
-
-print(f"RNDAtencion: {rnd_atencion}, Atención: {atencion}, RNDGenero: {rnd_genero}, Género: {genero}, RNDVenta: {rnd_venta}, Venta: {venta}, RNDSuscripcion: {rnd_suscripciones}, cant_suscripciones: {cant_suscripciones}, RND Atencion: {rndTiempoAtencion}, Tiempo Atencion: {tiempo_atencion}, Fin atencion:  {fin_atencion}")
- """

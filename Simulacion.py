@@ -13,26 +13,29 @@ class Simulacion:
         self.resultados = []
 
     def simular(self, horas, gasto):
-        fin_sim = horas * 60 #Se convierte la simulacion en minutos
+        fin_sim = horas * 60 #Convierto la simulacion en minutos
+        self.reloj = 0
         fila = 0
         self.casa = Casa() #se instancia la primer casa
-        self.procesar_casa(fila, gasto) #Se procesa la primer fila
+        self.reloj = self.procesar_casa(fila, gasto)  # Procesamos la primera fila y actualizamos el reloj
 
         while self.reloj < fin_sim:
-            fila += 1 # Se incrementa el número de iteraciones.
-            atencion, fin_atencion, rnd_atencion = self.casa.atencion(self.reloj)
-            if atencion == "SI":
-                self.reloj += 1  # Avanzar en caso de atención
+            fila += 1
+            self.casa = Casa()  # Nueva casa en cada iteración
+            nuevo_reloj = self.procesar_casa(fila, gasto)
+            
+            if fin_atencion is None or fin_atencion <= self.reloj:
+                print(f"[ERROR] El reloj no avanza. Reloj: {self.reloj}, Fin Atención: {fin_atencion}")
+                fin_atencion = self.reloj + 1
+
+            if nuevo_reloj > self.reloj:
+                self.reloj = nuevo_reloj  # Aseguramos que el reloj avanza
             else:
-                self.reloj = max(self.reloj + 1, fin_atencion)  # Asegurar avance en caso de "NO"
+                print(f"[ERROR] El reloj no avanza. Reloj actual: {self.reloj}, Nuevo reloj: {nuevo_reloj}")
+                break  # Salimos del bucle para evitar el ciclo infinito
 
-            self.casa = Casa()
-            self.procesar_casa(fila, gasto)
-
-        prob_ventas = round(self.cont_ventas / fila, 2)
-        punto_c = round((self.cont_suscripciones / fila) * 10000, 0)
-        print(f"[DEBUG] Fila: {fila}, Reloj: {self.reloj}")  #quitar esto 
-
+        prob_ventas = round(self.cont_ventas / fila, 2) if fila > 0 else 0
+        punto_c = round((self.cont_suscripciones / fila) * 10000, 0) if fila > 0 else 0
         
         return pd.DataFrame(self.resultados, columns=[
             "Nro Fila", "Reloj", "RND Atencion", "Atencion", "RND Genero", "Genero", 
@@ -44,18 +47,24 @@ class Simulacion:
     def procesar_casa(self, fila, gasto):
         atencion, fin_atencion, rnd_atencion = self.casa.atencion(self.reloj)
         genero, rnd_genero = self.casa.genero(atencion)
-        venta, fin_venta, rnd_venta, cant_venta, rnd_cant_venta, rnd_tiempo_atencion, tiempo_atencion = self.casa.venta(genero, self.reloj)
-        
+    
+        if atencion == "SI":
+            venta, fin_venta, rnd_venta, cant_venta, rnd_suscripciones, rnd_tiempo_atencion, tiempo_atencion = self.casa.venta(genero, self.reloj)
+            fin_atencion = fin_venta 
+        else:
+            venta, fin_venta, rnd_venta, cant_venta, rnd_suscripciones, rnd_tiempo_atencion, tiempo_atencion = "NO", 0, 0 , 0, 0, 0, 0
+    
         self.acu_ganancias += self.casa.utilidad * cant_venta
         self.acu_costo += gasto
+
         if venta == "SI":
             self.cont_ventas += 1
-            self.cont_suscripciones += cant_venta
-        
+            self.cont_suscripciones += cant_venta  # Asegúrate de sumar correctamente
+
         self.resultados.append([
             fila, self.reloj, rnd_atencion, atencion, rnd_genero, genero, 
             rnd_tiempo_atencion, tiempo_atencion, fin_atencion, rnd_venta, venta, 
-            rnd_cant_venta, cant_venta, self.casa.utilidad * cant_venta, gasto, 
+            rnd_suscripciones, cant_venta, self.casa.utilidad * cant_venta, gasto, 
             self.acu_ganancias, self.acu_costo, fila, self.cont_ventas, self.cont_suscripciones
         ])
 
