@@ -39,7 +39,7 @@ class Casa:
         else:
             return None, 0  # Usar None para indicar que no se generó un género
     
-    def tiempoAtencion(self, venta: bool, cantidad_suscripciones: int):
+    def tiempo_atencion(self, venta: bool, cantidad_suscripciones: int): #Invertir
         if not venta :
             random_entre_min_max = random.randint(self.tiempo_no_venta_min , self.tiempo_no_venta_max)
             tiempo_atencion = random_entre_min_max 
@@ -63,7 +63,7 @@ class Casa:
             cantidad_suscripciones, rnd_suscripciones = self.calcular_suscripciones(genero)
     
         # Calculo el tiempo de atención 
-        rndTiempoAtencion, tiempo_atencion = self.tiempoAtencion(venta, cantidad_suscripciones)
+        rndTiempoAtencion, tiempo_atencion = self.tiempo_atencion(venta, cantidad_suscripciones)
         fin_venta = reloj + tiempo_atencion
         
         return rnd_venta, venta, rnd_suscripciones, cantidad_suscripciones, rndTiempoAtencion, tiempo_atencion, fin_venta
