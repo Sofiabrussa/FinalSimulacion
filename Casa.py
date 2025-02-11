@@ -21,6 +21,7 @@ class Casa:
         
     def atencion (self, reloj: float):
         rnd_atencion = round(random.random(), 2) #Genero random para la atencion 
+        print(f"[DEBUG] Reloj: {reloj}, RND Atencion: {rnd_atencion}")  # <-- Quitar esto, es para depurar
         atencion = False
         fin_atencion = 0
         
@@ -55,7 +56,7 @@ class Casa:
             tiempo_atencion = random_entre_min_max + self.tiempo_extra * cantidad_suscripciones
             return random_entre_min_max, tiempo_atencion 
     
-    def Venta (self, genero: str, reloj: float):
+    def venta (self, genero: str, reloj: float):
         if genero:
             rnd_venta = round(random.random(), 2) #Genero rnd de venta
             venta = False
@@ -104,7 +105,7 @@ class Casa:
         
     
     
-# Pruebas
+""" # Pruebas
 casa = Casa()
 atencion, fin_atencion, rnd_atencion = casa.atencion(reloj=10)  
 genero, rnd_genero = casa.genero(atencion) 
@@ -117,3 +118,4 @@ else:
     venta, rnd_venta, cant_suscripciones, rnd_suscripciones, rndTiempoAtencion, tiempo_atencion = "NO", 0, 0, 0, 0, 0
 
 print(f"RNDAtencion: {rnd_atencion}, Atención: {atencion}, RNDGenero: {rnd_genero}, Género: {genero}, RNDVenta: {rnd_venta}, Venta: {venta}, RNDSuscripcion: {rnd_suscripciones}, cant_suscripciones: {cant_suscripciones}, RND Atencion: {rndTiempoAtencion}, Tiempo Atencion: {tiempo_atencion}, Fin atencion:  {fin_atencion}")
+ """
