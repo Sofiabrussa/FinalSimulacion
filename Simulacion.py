@@ -13,30 +13,25 @@ class Simulacion:
         self.resultados = []
 
     def simular(self, horas, gasto):
-        fin_sim = horas * 60 #Convierto la simulacion en minutos
+        fin_sim = horas * 60  # Convertimos la simulación en minutos
         self.reloj = 0
         fila = 0
-        self.casa = Casa() #se instancia la primer casa
-        self.reloj = self.procesar_casa(fila, gasto)  # Procesamos la primera fila y actualizamos el reloj
+        self.casa = Casa()  # Se instancia la primera casa
+        nuevo_reloj = self.procesar_casa(fila, gasto, self.reloj)  
+        self.reloj = nuevo_reloj
 
         while self.reloj < fin_sim:
             fila += 1
             self.casa = Casa()  # Nueva casa en cada iteración
-            nuevo_reloj = self.procesar_casa(fila, gasto)
-            
-            if fin_atencion is None or fin_atencion <= self.reloj:
-                print(f"[ERROR] El reloj no avanza. Reloj: {self.reloj}, Fin Atención: {fin_atencion}")
-                fin_atencion = self.reloj + 1
-
-            if nuevo_reloj > self.reloj:
-                self.reloj = nuevo_reloj  # Aseguramos que el reloj avanza
-            else:
-                print(f"[ERROR] El reloj no avanza. Reloj actual: {self.reloj}, Nuevo reloj: {nuevo_reloj}")
-                break  # Salimos del bucle para evitar el ciclo infinito
+            # Procesamos la siguiente casa y actualizamos el reloj con el nuevo valor
+            nuevo_reloj = self.procesar_casa(fila, gasto, self.reloj)
+        
+            # Aseguramos que el reloj avance con el valor de 'fin_atencion' de la casa procesada
+            self.reloj = nuevo_reloj  # Actualizamos el reloj con el 'fin_atencion' de la casa
 
         prob_ventas = round(self.cont_ventas / fila, 2) if fila > 0 else 0
         punto_c = round((self.cont_suscripciones / fila) * 10000, 0) if fila > 0 else 0
-        
+    
         return pd.DataFrame(self.resultados, columns=[
             "Nro Fila", "Reloj", "RND Atencion", "Atencion", "RND Genero", "Genero", 
             "RND Tiempo Atencion", "Tiempo Atención", "Fin Atención", "RND Venta", "Venta", 
@@ -44,29 +39,31 @@ class Simulacion:
             "Costo Acumulado", "Contador Visitas", "Contador Ventas", "Contador Suscripciones"
         ]), prob_ventas, punto_c
     
-    def procesar_casa(self, fila, gasto):
-        atencion, fin_atencion, rnd_atencion = self.casa.atencion(self.reloj)
+    def procesar_casa(self, fila, gasto, reloj: int):
+        atencion, fin_atencion, rnd_atencion = self.casa.atencion(reloj)
         genero, rnd_genero = self.casa.genero(atencion)
     
-        if atencion == "SI":
-            venta, fin_venta, rnd_venta, cant_venta, rnd_suscripciones, rnd_tiempo_atencion, tiempo_atencion = self.casa.venta(genero, self.reloj)
+        if atencion:
+            rnd_venta, venta, rnd_suscripciones, cantidad_suscripciones, rndTiempoAtencion, tiempo_atencion, fin_venta = self.casa.venta(fin_atencion)
             fin_atencion = fin_venta 
         else:
-            venta, fin_venta, rnd_venta, cant_venta, rnd_suscripciones, rnd_tiempo_atencion, tiempo_atencion = "NO", 0, 0 , 0, 0, 0, 0
+            rnd_venta, venta, rnd_suscripciones, cantidad_suscripciones, rndTiempoAtencion, tiempo_atencion, fin_venta = "NO", 0, 0 , 0, 0, 0, 0
     
-        self.acu_ganancias += self.casa.utilidad * cant_venta
+        self.acu_ganancias += self.casa.utilidad * cantidad_suscripciones
         self.acu_costo += gasto
 
-        if venta == "SI":
+        if venta:
             self.cont_ventas += 1
-            self.cont_suscripciones += cant_venta  # Asegúrate de sumar correctamente
+            self.cont_suscripciones += cantidad_suscripciones  # Asegúrate de sumar correctamente
 
         self.resultados.append([
             fila, self.reloj, rnd_atencion, atencion, rnd_genero, genero, 
-            rnd_tiempo_atencion, tiempo_atencion, fin_atencion, rnd_venta, venta, 
-            rnd_suscripciones, cant_venta, self.casa.utilidad * cant_venta, gasto, 
+            rndTiempoAtencion, tiempo_atencion, fin_atencion, rnd_venta, venta, 
+            rnd_suscripciones, cantidad_suscripciones, self.casa.utilidad * cantidad_suscripciones, gasto, 
             self.acu_ganancias, self.acu_costo, fila, self.cont_ventas, self.cont_suscripciones
         ])
+        
+        return fin_atencion
 
 
 #Ejecucion
