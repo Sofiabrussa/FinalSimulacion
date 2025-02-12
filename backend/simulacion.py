@@ -1,16 +1,21 @@
-from backend.casa import Casa
+import pandas as pd
+from casa import Casa
 
 class Simulacion:
     
     #Constructor Simulacion
     def __init__(self):
         self.reloj = 0
+        self.gasto = 0
         self.casa = None
         self.acu_ganancias = 0
         self.acu_costo = 0
         self.cont_ventas = 0
         self.cont_suscripciones = 0
         self.resultados = []
+        #self.total_filas = 0
+
+    
 
     #Funcion "Simular" simula el proceso de atencion y venta de las casas en un determinado tiempo 
     def simular(self, horas, gasto):
@@ -21,7 +26,7 @@ class Simulacion:
         #Proceso la primer casa
         self.casa = Casa() 
         self.reloj = self.__procesar_casa(fila)
-        
+
         while self.reloj < fin_sim:
             fila += 1
             # Nueva casa en cada iteración
@@ -29,10 +34,11 @@ class Simulacion:
             self.reloj = self.__procesar_casa(fila)
 
         self.total_filas = fila
+        
     
     #Funcion "procesar_casa"  procesa una casa en la simulación utilizando las funciones de Casa
-    def __procesar_casa(self, fila, gasto, reloj: int):
-        atencion, fin_atencion, rnd_atencion = self.casa.atencion(reloj)
+    def __procesar_casa(self, fila):
+        atencion, fin_atencion, rnd_atencion = self.casa.atencion(self.reloj)
         genero, rnd_genero = self.casa.genero(atencion)
     
         if atencion:
@@ -43,7 +49,7 @@ class Simulacion:
     
         #Acumuladores
         self.acu_ganancias += self.casa.utilidad * cantidad_suscripciones
-        self.acu_costo += gasto
+        self.acu_costo += self.gasto
 
         #Contadores
         if venta:
@@ -53,9 +59,10 @@ class Simulacion:
         self.resultados.append([
             fila, self.reloj, rnd_atencion, atencion, rnd_genero, genero, 
             rndTiempoAtencion, tiempo_atencion, fin_atencion, rnd_venta, venta, 
-            rnd_suscripciones, cantidad_suscripciones, self.casa.utilidad * cantidad_suscripciones, gasto, 
+            rnd_suscripciones, cantidad_suscripciones, self.casa.utilidad * cantidad_suscripciones, self.gasto, 
             self.acu_ganancias, self.acu_costo, fila, self.cont_ventas, self.cont_suscripciones
         ])
+        
         return fin_atencion
     
     def obtener_resultados(self):
@@ -68,9 +75,9 @@ class Simulacion:
             "RND Cantidad", "Cantidad", "Ganancia", "Costo", "Ganancia Acumulada", 
             "Costo Acumulado", "Contador Visitas", "Contador Ventas", "Contador Suscripciones"
         ])
-        
+
         df["Genero"] = df["Genero"].fillna("-")
-        
+
         return df, prob_ventas, punto_c
 
 
