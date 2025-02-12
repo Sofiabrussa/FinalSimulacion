@@ -1,5 +1,9 @@
 import random 
 
+class SEXO:
+    HOMBRE = "HOMBRE"
+    MUJER = "MUJER"
+
 class Casa:
     #Constructor Casa
     def __init__(self, prob_atencion=0.7, prob_genero=0.8, prob_venta_mujer=0.15, prob_venta_hombre=0.3,
@@ -34,9 +38,9 @@ class Casa:
             rnd_genero = round(random.uniform(0, 0.99), 2) 
             
             if rnd_genero <= self.prob_genero:
-                return "MUJER", rnd_genero
+                return SEXO.MUJER, rnd_genero
             else:
-                return "HOMBRE", rnd_genero
+                return SEXO.HOMBRE, rnd_genero
         else:
             return None, 0 
     
@@ -59,7 +63,7 @@ class Casa:
         cantidad_suscripciones = 0
         rnd_suscripciones = None
  
-        if (genero == "MUJER" and rnd_venta <= self.prob_venta_mujer) or (genero == "HOMBRE" and rnd_venta <= self.prob_venta_hombre):
+        if (genero == SEXO.MUJER and rnd_venta <= self.prob_venta_mujer) or (genero == SEXO.HOMBRE and rnd_venta <= self.prob_venta_hombre):
             venta = True
             cantidad_suscripciones, rnd_suscripciones = self.calcular_suscripciones(genero)
     
@@ -72,9 +76,9 @@ class Casa:
     
     #Funcion "calcular_suscripciones" recibe el genero y segun estadisticas calcula la cantidad de suscripciones que vende
     def calcular_suscripciones(self, genero: str):
-        if genero == "MUJER":
+        if genero == SEXO.MUJER:
             frecuencias = [0.60, 0.25, 0.10, 0.05]
-        elif genero == "HOMBRE":
+        elif genero == SEXO.HOMBRE:
             frecuencias = [0.20, 0.30, 0.35, 0.15]
         else:
             raise ValueError("El género debe ser 'MUJER' o 'HOMBRE'. Valor recibido: {}".format(genero))
