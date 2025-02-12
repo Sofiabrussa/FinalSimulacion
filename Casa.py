@@ -20,7 +20,7 @@ class Casa:
         self.cantidad_horas_simular = cantidad_horas_simular
         
     #Funcion "atencion" recibe el reloj, si no lo atienden, se suma el tiempo de no atencion. Si lo atienden, se retorna valor del reloj    
-    def atencion (self, reloj: int):   
+    def atencion(self, reloj: int):   
         rnd_atencion = round(random.uniform(0, 0.99), 2)
        
         if rnd_atencion <= self.prob_atencion:
@@ -29,7 +29,7 @@ class Casa:
             return False, reloj + self.tiempo_no_atencion, rnd_atencion  
 
     #Funcion "genero" recibe si fue atendido o no. Si lo atienden, calcula si es mujer u hombre  
-    def genero (self, atencion: bool ):
+    def genero(self, atencion: bool ):
         if atencion:
             rnd_genero = round(random.uniform(0, 0.99), 2) 
             
@@ -52,7 +52,7 @@ class Casa:
             return random_entre_min_max, tiempo_atencion 
    
    #Funcion "venta" recibe el reloj actual, calcula en base a si es hombre o mujer si se concreta o no la venta 
-    def venta (self, reloj: int):
+    def venta(self, reloj: int):
         genero, rnd_genero = self.genero(True)   
         rnd_venta = round(random.uniform(0, 0.99), 2) 
         venta = False
