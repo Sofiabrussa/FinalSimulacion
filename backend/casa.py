@@ -72,8 +72,6 @@ class Casa:
         rndTiempoAtencion, tiempo_atencion = self.tiempo_atencion(venta, cantidad_suscripciones)
         fin_venta = reloj + tiempo_atencion
         
-        print(f"Género: {genero}, RND Venta: {rnd_venta}, Probabilidad Mujer: {self.prob_venta_mujer}, Probabilidad Hombre: {self.prob_venta_hombre}")
-
         return rnd_venta, venta, rnd_suscripciones, cantidad_suscripciones, rndTiempoAtencion, tiempo_atencion, fin_venta
         
     

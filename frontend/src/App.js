@@ -122,5 +122,8 @@ export default App;
 
 
 /* ------------------- VER ----------------------
-- Columna atencion debe devolver si o no dependienod si se atiende o no 
-- Mover columna fin de atencion antes de rnd venta */
+- Mover columna fin de atencion antes de rnd venta
+- Random tiempo de atencion tiene q ir de 0,01 a0,99 
+- Contador ventas funciona mal 
+- Validar campos prob de no ingresar mas de 1 
+*/
