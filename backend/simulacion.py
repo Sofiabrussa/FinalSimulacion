@@ -13,16 +13,16 @@ class Simulacion:
         self.cont_ventas = 0
         self.cont_suscripciones = 0
         self.resultados = []
-        #self.total_filas = 0
+        self.total_filas = 0
 
     
 
     #Funcion "Simular" simula el proceso de atencion y venta de las casas en un determinado tiempo 
     def simular(self, horas, gasto):
         self.gasto = gasto
-        fin_sim = horas * 60  
         self.reloj = 0
         fila = 0
+        fin_sim = horas * 60  
         #Proceso la primer casa
         self.casa = Casa() 
         self.reloj = self.__procesar_casa(fila)
