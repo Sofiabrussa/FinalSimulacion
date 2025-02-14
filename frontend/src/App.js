@@ -1,13 +1,11 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow,} from "@/components/ui/table";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Form, Row, Col, Button, Container, Table } from "react-bootstrap";
 
 const App = () => {
   const [params, setParams] = useState({
     prob_atencion: 0.7,
-    prob_genero: 0.8, 
+    prob_genero: 0.8,
     prob_venta_mujer: 0.15,
     prob_venta_hombre: 0.3,
     utilidad: 5,
@@ -40,7 +38,7 @@ const App = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify( {horas: 10, gasto: 5 })
+        body: JSON.stringify({ horas: 10, gasto: 5 })
       });
       const data = await response.json();
       setResults(data.results);
@@ -51,71 +49,76 @@ const App = () => {
   };
 
   return (
-    <div className="container mx-auto p-8 space-y-8">
-      <h1 className="text-4xl font-bold text-center mb-12">Final Simulación</h1>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        {Object.entries(params).map(([key, value]) => (
-          <div key={key} className="space-y-2">
-            <Label htmlFor={key} className="text-sm font-medium">
-              {key.replace(/_/g, ' ').toUpperCase()}
-            </Label>
-            <Input
-              id={key}
-              name={key}
-              type="number"
-              step="0.01"
-              value={value}
-              onChange={handleInputChange}
-              className="w-full"
-            />
-          </div>
-        ))}
-      </div>
+    <>
+      <Container className="p-4">
+        <h1 className="text-center mb-4">Final Simulación</h1>
 
-      <div className="flex justify-center mb-8">
+        <Form>
+          <Row className="g-3">
+            {Object.entries(params).map(([key, value]) => (
+              <Col key={key} xs={12} md={6} lg={4}>
+                <Form.Group controlId={key}>
+                  <Form.Label>{key.replace(/_/g, " ").toUpperCase()}</Form.Label>
+                  <Form.Control
+                    type="number"
+                    step="0.01"
+                    name={key}
+                    value={value}
+                    onChange={handleInputChange}
+                  />
+                </Form.Group>
+              </Col>
+            ))}
+          </Row>
+        </Form>
+      </Container>
+
+      <Container className="text-center mb-4">
         <Button
           onClick={handleSimulate}
           disabled={loading}
-          className="px-8 py-2"
+          variant="primary"
+          size="lg"
         >
           {loading ? "Simulando..." : "Simular"}
         </Button>
-      </div>
+      </Container>
 
-      {results.length > 0 && (
-        <div className="overflow-x-auto rounded-lg border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Nro Fila</TableHead>
-                <TableHead>Reloj</TableHead>
-                <TableHead>Atención</TableHead>
-                <TableHead>Género</TableHead>
-                <TableHead>Venta</TableHead>
-                <TableHead>Cantidad</TableHead>
-                <TableHead>Ganancia</TableHead>
-                <TableHead>Costo</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {results.map((row, index) => (
-                <TableRow key={index}>
-                  <TableCell>{row.nro_fila}</TableCell>
-                  <TableCell>{row.reloj}</TableCell>
-                  <TableCell>{row.atencion ? "Sí" : "No"}</TableCell>
-                  <TableCell>{row.genero}</TableCell>
-                  <TableCell>{row.venta ? "Sí" : "No"}</TableCell>
-                  <TableCell>{row.cantidad}</TableCell>
-                  <TableCell>{row.ganancia}</TableCell>
-                  <TableCell>{row.costo}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      )}
-    </div>
+      {
+        results.length > 0 && (
+          <Container className="overflow-auto rounded border p-3">
+            <Table striped bordered hover responsive>
+              <thead>
+                <tr>
+                  <th>Nro Fila</th>
+                  <th>Reloj</th>
+                  <th>Atención</th>
+                  <th>Género</th>
+                  <th>Venta</th>
+                  <th>Cantidad</th>
+                  <th>Ganancia</th>
+                  <th>Costo</th>
+                </tr>
+              </thead>
+              <tbody>
+                {results.map((row, index) => (
+                  <tr key={index}>
+                    <td>{row.nro_fila}</td>
+                    <td>{row.reloj}</td>
+                    <td>{row.atencion ? "Sí" : "No"}</td>
+                    <td>{row.genero}</td>
+                    <td>{row.venta ? "Sí" : "No"}</td>
+                    <td>{row.cantidad}</td>
+                    <td>{row.ganancia}</td>
+                    <td>{row.costo}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Container>
+        )
+      }
+    </>
   );
 };
 
