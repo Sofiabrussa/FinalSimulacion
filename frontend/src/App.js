@@ -22,6 +22,7 @@ const App = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  //Esta función maneja los cambios en los valores de los inputs (campos de formulario).
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setParams(prev => ({
@@ -33,15 +34,15 @@ const App = () => {
   const handleSimulate = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:8000/simulate', {
+      const response = await fetch('http://localhost:8000/simulacion', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ horas: 10, gasto: 5 })
+        body: JSON.stringify({ horas: 480, gasto: 5.0 })
       });
       const data = await response.json();
-      setResults(data.results);
+      setResults(Array.isArray(data.results) ? data.results : []);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -90,27 +91,19 @@ const App = () => {
             <Table striped bordered hover responsive>
               <thead>
                 <tr>
-                  <th>Nro Fila</th>
-                  <th>Reloj</th>
-                  <th>Atención</th>
-                  <th>Género</th>
-                  <th>Venta</th>
-                  <th>Cantidad</th>
-                  <th>Ganancia</th>
-                  <th>Costo</th>
+                  {/* Aquí se crean dinámicamente las columnas según las claves del primer objeto */}
+                  {Object.keys(results[0]).map((key) => (
+                    <th key={key}>{key}</th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
                 {results.map((row, index) => (
                   <tr key={index}>
-                    <td>{row.nro_fila}</td>
-                    <td>{row.reloj}</td>
-                    <td>{row.atencion ? "Sí" : "No"}</td>
-                    <td>{row.genero}</td>
-                    <td>{row.venta ? "Sí" : "No"}</td>
-                    <td>{row.cantidad}</td>
-                    <td>{row.ganancia}</td>
-                    <td>{row.costo}</td>
+                    {/* Se mapean las filas de acuerdo con las claves dinámicamente */}
+                    {Object.keys(row).map((key) => (
+                      <td key={key}>{row[key]}</td>
+                    ))}
                   </tr>
                 ))}
               </tbody>

@@ -1,5 +1,7 @@
 import pandas as pd
+import numpy as np
 from casa import Casa
+import json
 
 class Simulacion:
     
@@ -75,7 +77,10 @@ class Simulacion:
             "RND Cantidad", "Cantidad", "Ganancia", "Costo", "Ganancia Acumulada", 
             "Costo Acumulado", "Contador Visitas", "Contador Ventas", "Contador Suscripciones"
         ])
-
+        
+        # Reemplazar valores fuera de rango o NaN
+        df = df.replace([np.inf, -np.inf], np.nan)
+        df = df.fillna(0)
         df["Genero"] = df["Genero"].fillna("-")
 
         return df, prob_ventas, punto_c
