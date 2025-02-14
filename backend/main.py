@@ -4,22 +4,17 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-""" #Ejecucion
-pd.set_option('display.max_rows', None)  # Muestra todas las filas
-pd.set_option('display.max_columns', None)  # Muestra todas las columnas
-pd.set_option('display.expand_frame_repr', False)
- """
+
 app = FastAPI()
 
 # Configurar CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Permitir solo el frontend
+    allow_origins=["*"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 # permite definir el formato esperado de los datos en la solicitud
 class SimulacionRequest(BaseModel):
