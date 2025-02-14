@@ -61,7 +61,7 @@ class Casa:
         rnd_venta = round(random.uniform(0, 0.99), 2) 
         venta = False
         cantidad_suscripciones = 0
-        rnd_suscripciones = None
+        rnd_suscripciones = 0
  
         if (genero == SEXO.MUJER and rnd_venta <= self.prob_venta_mujer) or (genero == SEXO.HOMBRE and rnd_venta <= self.prob_venta_hombre):
             venta = True

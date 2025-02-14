@@ -39,7 +39,9 @@ const App = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ horas: 480, gasto: 5.0 })
+        body: JSON.stringify({         
+          horas: params.cantidad_horas_simular,
+          gasto: params.gasto })
       });
       const data = await response.json();
       setResults(Array.isArray(data.results) ? data.results : []);
@@ -52,11 +54,12 @@ const App = () => {
   return (
     <>
       <Container className="p-4">
-        <h1 className="text-center mb-4">Final Simulación</h1>
+        <h1 className="text-center mb-4 ">Final Simulación</h1>
 
-        <Form>
+        <Form>  {/* contenedor para los campos del formulario */}
           <Row className="g-3">
-            {Object.entries(params).map(([key, value]) => (
+           {/*Object.entries toma el objeto params y lo convierte en un array de pares clave-valor. Mapeo para que cada iteración genere un campo del formulario  */}
+            {Object.entries(params).map(([key, value]) => (  
               <Col key={key} xs={12} md={6} lg={4}>
                 <Form.Group controlId={key}>
                   <Form.Label>{key.replace(/_/g, " ").toUpperCase()}</Form.Label>
@@ -87,7 +90,7 @@ const App = () => {
 
       {
         results.length > 0 && (
-          <Container className="overflow-auto rounded border p-3">
+          <Container fluid className="overflow-auto rounded border p-3">
             <Table striped bordered hover responsive>
               <thead>
                 <tr>
@@ -116,3 +119,8 @@ const App = () => {
 };
 
 export default App;
+
+
+/* ------------------- VER ----------------------
+- Columna atencion debe devolver si o no dependienod si se atiende o no 
+- Mover columna fin de atencion antes de rnd venta */
