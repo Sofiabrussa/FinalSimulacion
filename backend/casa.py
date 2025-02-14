@@ -63,14 +63,17 @@ class Casa:
         cantidad_suscripciones = 0
         rnd_suscripciones = 0
  
-        if (genero == SEXO.MUJER and rnd_venta <= self.prob_venta_mujer) or (genero == SEXO.HOMBRE and rnd_venta <= self.prob_venta_hombre):
-            venta = True
+        if ((genero == SEXO.MUJER and rnd_venta <= self.prob_venta_mujer) or 
+            (genero == SEXO.HOMBRE and rnd_venta <= self.prob_venta_hombre)):
+            venta = True             
             cantidad_suscripciones, rnd_suscripciones = self.calcular_suscripciones(genero)
     
         # Calculo el tiempo de atención 
         rndTiempoAtencion, tiempo_atencion = self.tiempo_atencion(venta, cantidad_suscripciones)
         fin_venta = reloj + tiempo_atencion
         
+        print(f"Género: {genero}, RND Venta: {rnd_venta}, Probabilidad Mujer: {self.prob_venta_mujer}, Probabilidad Hombre: {self.prob_venta_hombre}")
+
         return rnd_venta, venta, rnd_suscripciones, cantidad_suscripciones, rndTiempoAtencion, tiempo_atencion, fin_venta
         
     

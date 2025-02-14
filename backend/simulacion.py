@@ -47,11 +47,13 @@ class Simulacion:
             rnd_venta, venta, rnd_suscripciones, cantidad_suscripciones, rndTiempoAtencion, tiempo_atencion, fin_venta = self.casa.venta(fin_atencion)
             fin_atencion = fin_venta 
             atencion = "SI"
-            venta = "SI"
+            if venta:
+                venta = "SI"
+            else:
+                venta = "NO"
         else:
             rnd_venta, venta, rnd_suscripciones, cantidad_suscripciones, rndTiempoAtencion, tiempo_atencion, fin_venta = "NO", 0, 0 , 0, 0, 0, 0
             atencion = "NO"
-            venta = "NO"
     
         #Acumuladores
         self.acu_ganancias += self.casa.utilidad * cantidad_suscripciones
