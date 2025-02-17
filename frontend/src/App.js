@@ -14,7 +14,7 @@ const App = () => {
     tiempo_no_venta_min: 15,
     tiempo_no_venta_max: 25,
     tiempo_venta_min: 15,
-    tiempo_venta_max: 15,
+    tiempo_venta_max: 20,
     tiempo_extra: 4,
     cantidad_horas_simular: 8
   });
@@ -87,6 +87,7 @@ const App = () => {
         })
       });
       const data = await response.json();
+      console.log(data); // Añadir este console log para depurar
       setResults(Array.isArray(data.results) ? data.results : []);
     } catch (error) {
       console.error('Error:', error);
