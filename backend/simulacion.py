@@ -23,7 +23,7 @@ class Simulacion:
     def simular(self, horas, gasto):
         self.gasto = gasto
         self.reloj = 0
-        fila = 0
+        fila = 1
         fin_sim = horas * 60  
         #Proceso la primer casa
         self.casa = Casa() 

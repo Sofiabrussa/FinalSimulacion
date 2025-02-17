@@ -165,6 +165,5 @@ export default App;
 
 
 /* ------------------- VER ----------------------
-- valores en fin de atencion con , infinitos
-- Contador visitas empieza en cero y deberia ser en 1 
+- valores en fin de atencion con , infinitos 
 */
