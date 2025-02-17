@@ -25,7 +25,7 @@ class Casa:
         
     #Funcion "atencion" recibe el reloj, si no lo atienden, se suma el tiempo de no atencion. Si lo atienden, se retorna valor del reloj    
     def atencion(self, reloj: int):   
-        rnd_atencion = round(random.uniform(0.01, 0.99), 2)
+        rnd_atencion = random.uniform(0.01, 0.99)
        
         if rnd_atencion <= self.prob_atencion:
             return True, reloj, rnd_atencion, self.tiempo_no_atencion
@@ -35,7 +35,7 @@ class Casa:
     #Funcion "genero" recibe si fue atendido o no. Si lo atienden, calcula si es mujer u hombre  
     def genero(self, atencion: bool ):
         if atencion:
-            rnd_genero = round(random.uniform(0.01, 0.99), 2) 
+            rnd_genero = random.uniform(0.01, 0.99) 
             
             if rnd_genero <= self.prob_genero:
                 return SEXO.MUJER, rnd_genero
@@ -47,7 +47,7 @@ class Casa:
     #Funcion "tiempo_atencion" recibe si hubo venta y en base a eso calcula el tiempo de venta o no venta
     # valor=min+(random×(max−min))
     def tiempo_atencion(self, venta: bool, cantidad_suscripciones: int):
-        random_para_min_max = round(random.uniform(0.01, 0.99), 2) 
+        random_para_min_max = random.uniform(0.01, 0.99) 
         
         if venta :
             random_entre_min_max = (random_para_min_max * (float(self.tiempo_venta_max) - float(self.tiempo_venta_min))) + float(self.tiempo_venta_min)
@@ -61,7 +61,7 @@ class Casa:
    #Funcion "venta" recibe el reloj actual, calcula en base a si es hombre o mujer si se concreta o no la venta 
     def venta(self, reloj: int):
         genero, rnd_genero = self.genero(True)   
-        rnd_venta = round(random.uniform(0.01, 0.99), 2) 
+        rnd_venta = random.uniform(0.01, 0.99)
         venta = False
         cantidad_suscripciones = 0
         rnd_suscripciones = 0
@@ -87,7 +87,7 @@ class Casa:
         else:
             raise ValueError("El género debe ser 'MUJER' o 'HOMBRE'. Valor recibido: {}".format(genero))
         
-        rnd_suscripciones = round(random.uniform(0.01, 0.99), 2)
+        rnd_suscripciones = random.uniform(0.01, 0.99)
         
         if rnd_suscripciones <= frecuencias[0]: 
             return 1, rnd_suscripciones

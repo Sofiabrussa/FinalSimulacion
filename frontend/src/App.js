@@ -24,7 +24,7 @@ const App = () => {
 
   const validateField = (name, value) => {
     let error = "";
-    
+
     if (value === "" || isNaN(value)) {
       error = "Este campo no puede estar vacío";
     } else if (name.startsWith("prob")) {
@@ -43,7 +43,7 @@ const App = () => {
     if (name === "tiempo_venta_max" && value <= params.tiempo_venta_min) {
       error = "Debe ser mayor a TIEMPO VENTA MIN";
     }
-    
+
     return error;
   };
 
@@ -51,7 +51,7 @@ const App = () => {
     const { name, value } = e.target;
     const parsedValue = parseFloat(value);
     const error = validateField(name, parsedValue);
-    
+
     setParams(prev => ({
       ...prev,
       [name]: parsedValue
@@ -81,13 +81,9 @@ const App = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          horas: params.cantidad_horas_simular,
-          gasto: params.gasto
-        })
+        body: JSON.stringify(params)
       });
       const data = await response.json();
-      console.log(data); // Añadir este console log para depurar
       setResults(Array.isArray(data.results) ? data.results : []);
     } catch (error) {
       console.error('Error:', error);
@@ -146,9 +142,16 @@ const App = () => {
               <tbody>
                 {results.map((row, index) => (
                   <tr key={index}>
-                    {Object.keys(row).map((key) => (
-                      <td key={key}>{row[key]}</td>
-                    ))}
+                    {Object.keys(row).map((key) => {
+                      const value = row[key];
+                      return (
+                        <td key={key}>
+                          {typeof value === "number" && !Number.isInteger(value)
+                            ? value.toFixed(2).replace(".", ",") // Trunca a 2 decimales y cambia . por ,
+                            : value}
+                        </td>
+                      );
+                    })}
                   </tr>
                 ))}
               </tbody>
@@ -165,5 +168,5 @@ export default App;
 
 
 /* ------------------- VER ----------------------
-- valores en fin de atencion con , infinitos 
+- Ver de generar randoms con funcion normal o uniforme
 */

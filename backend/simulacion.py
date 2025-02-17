@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 from casa import Casa
-import json
 
 class Simulacion:
     
@@ -17,22 +16,20 @@ class Simulacion:
         self.resultados = []
         self.total_filas = 0
 
-    
-
     #Funcion "Simular" simula el proceso de atencion y venta de las casas en un determinado tiempo 
-    def simular(self, horas, gasto):
+    def simular(self, horas, gasto, casa_params):
         self.gasto = gasto
         self.reloj = 0
         fila = 1
         fin_sim = horas * 60  
         #Proceso la primer casa
-        self.casa = Casa() 
+        self.casa = Casa(**casa_params) 
         self.reloj = self.__procesar_casa(fila)
 
         while self.reloj < fin_sim:
             fila += 1
             # Nueva casa en cada iteración
-            self.casa = Casa()
+            self.casa = Casa(**casa_params)
             self.reloj = self.__procesar_casa(fila)
 
         self.total_filas = fila
