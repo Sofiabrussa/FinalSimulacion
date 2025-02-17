@@ -3,6 +3,7 @@ from simulacion import Simulacion
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+#PARA EJECUTAR EL BACK: uvicorn main:app --reload
 
 
 app = FastAPI()

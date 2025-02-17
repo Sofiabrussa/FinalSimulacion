@@ -60,7 +60,7 @@ class Simulacion:
         self.acu_costo += self.gasto
 
         #Contadores
-        if venta:
+        if venta == "SI":
             self.cont_ventas += 1
             self.cont_suscripciones += cantidad_suscripciones  
 

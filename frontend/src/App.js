@@ -19,47 +19,88 @@ const App = () => {
     cantidad_horas_simular: 8
   });
 
-  const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({}); /* Se usa para almacenar los mensajes de error de cada campo. */
+  const [results, setResults] = useState([]); /* Almacena los resultados de la simulación una vez que se ejecuta. */
 
-  //Esta función maneja los cambios en los valores de los inputs (campos de formulario).
+  const validateField = (name, value) => {
+    let error = "";
+    
+    if (value === "" || isNaN(value)) {
+      error = "Este campo no puede estar vacío";
+    } else if (name.startsWith("prob")) {
+      if (value < 0.01 || value > 0.99) {
+        error = "Debe estar entre 0.01 y 0.99";
+      }
+    } else {
+      if (value <= 0) {
+        error = "Debe ser mayor a 0";
+      }
+    }
+
+    if (name === "tiempo_no_venta_max" && value <= params.tiempo_no_venta_min) {
+      error = "Debe ser mayor a TIEMPO NO VENTA MIN";
+    }
+    if (name === "tiempo_venta_max" && value <= params.tiempo_venta_min) {
+      error = "Debe ser mayor a TIEMPO VENTA MIN";
+    }
+    
+    return error;
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    const parsedValue = parseFloat(value);
+    const error = validateField(name, parsedValue);
+    
     setParams(prev => ({
       ...prev,
-      [name]: parseFloat(value)
+      [name]: parsedValue
+    }));
+
+    setErrors(prev => ({
+      ...prev,
+      [name]: error
     }));
   };
 
   const handleSimulate = async () => {
-    setLoading(true);
+    const newErrors = {};
+    Object.entries(params).forEach(([key, value]) => {
+      const error = validateField(key, value);
+      if (error) newErrors[key] = error;
+    });
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
     try {
       const response = await fetch('http://localhost:8000/simulacion', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({         
+        body: JSON.stringify({
           horas: params.cantidad_horas_simular,
-          gasto: params.gasto })
+          gasto: params.gasto
+        })
       });
       const data = await response.json();
       setResults(Array.isArray(data.results) ? data.results : []);
     } catch (error) {
       console.error('Error:', error);
     }
-    setLoading(false);
   };
 
   return (
     <>
       <Container className="p-4">
-        <h1 className="text-center mb-4 ">Final Simulación</h1>
+        <h1 className="text-center mb-4">Final Simulación</h1>
 
-        <Form>  {/* contenedor para los campos del formulario */}
+        <Form>
           <Row className="g-3">
-           {/*Object.entries toma el objeto params y lo convierte en un array de pares clave-valor. Mapeo para que cada iteración genere un campo del formulario  */}
-            {Object.entries(params).map(([key, value]) => (  
+            {Object.entries(params).map(([key, value]) => (
               <Col key={key} xs={12} md={6} lg={4}>
                 <Form.Group controlId={key}>
                   <Form.Label>{key.replace(/_/g, " ").toUpperCase()}</Form.Label>
@@ -69,7 +110,11 @@ const App = () => {
                     name={key}
                     value={value}
                     onChange={handleInputChange}
+                    isInvalid={!!errors[key]}
                   />
+                  <Form.Control.Feedback type="invalid">
+                    {errors[key]}
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Col>
             ))}
@@ -80,11 +125,9 @@ const App = () => {
       <Container className="text-center mb-4">
         <Button
           onClick={handleSimulate}
-          disabled={loading}
           variant="primary"
-          size="lg"
-        >
-          {loading ? "Simulando..." : "Simular"}
+          size="lg">
+          Simulación
         </Button>
       </Container>
 
@@ -94,7 +137,6 @@ const App = () => {
             <Table striped bordered hover responsive>
               <thead>
                 <tr>
-                  {/* Aquí se crean dinámicamente las columnas según las claves del primer objeto */}
                   {Object.keys(results[0]).map((key) => (
                     <th key={key}>{key}</th>
                   ))}
@@ -103,7 +145,6 @@ const App = () => {
               <tbody>
                 {results.map((row, index) => (
                   <tr key={index}>
-                    {/* Se mapean las filas de acuerdo con las claves dinámicamente */}
                     {Object.keys(row).map((key) => (
                       <td key={key}>{row[key]}</td>
                     ))}
@@ -121,9 +162,9 @@ const App = () => {
 export default App;
 
 
+
 /* ------------------- VER ----------------------
-- Mover columna fin de atencion antes de rnd venta
-- Random tiempo de atencion tiene q ir de 0,01 a0,99 
-- Contador ventas funciona mal 
-- Validar campos prob de no ingresar mas de 1 
+- Validar campos prob de no ingresar mas de 1
+- valores en fin de atencion con , infinitos
+- Corregir validaciones de no permitir ingresar 0 o deja rel campo vacio
 */
