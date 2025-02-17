@@ -28,9 +28,9 @@ class Casa:
         rnd_atencion = round(random.uniform(0.01, 0.99), 2)
        
         if rnd_atencion <= self.prob_atencion:
-            return True, reloj, rnd_atencion  
+            return True, reloj, rnd_atencion, self.tiempo_no_atencion
         else:
-            return False, reloj + self.tiempo_no_atencion, rnd_atencion  
+            return False, reloj + self.tiempo_no_atencion, rnd_atencion, self.tiempo_no_atencion  
 
     #Funcion "genero" recibe si fue atendido o no. Si lo atienden, calcula si es mujer u hombre  
     def genero(self, atencion: bool ):
@@ -50,9 +50,8 @@ class Casa:
         random_para_min_max = round(random.uniform(0.01, 0.99), 2) 
         
         if venta :
-            random_entre_min_max = self.tiempo_venta_min + random_para_min_max * (self.tiempo_venta_max - self.tiempo_venta_min)
-            tiempo_atencion = random_entre_min_max + self.tiempo_extra * cantidad_suscripciones
-            
+            random_entre_min_max = (random_para_min_max * (float(self.tiempo_venta_max) - float(self.tiempo_venta_min))) + float(self.tiempo_venta_min)
+            tiempo_atencion = random_entre_min_max + self.tiempo_extra * cantidad_suscripciones   
         else:
             random_entre_min_max = self.tiempo_no_venta_min + random_para_min_max * (self.tiempo_no_venta_max - self.tiempo_no_venta_min)
             tiempo_atencion = random_entre_min_max 

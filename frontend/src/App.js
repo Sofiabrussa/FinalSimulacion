@@ -165,7 +165,6 @@ export default App;
 
 
 /* ------------------- VER ----------------------
-- Validar campos prob de no ingresar mas de 1
 - valores en fin de atencion con , infinitos
-- Corregir validaciones de no permitir ingresar 0 o deja rel campo vacio
+- Contador visitas empieza en cero y deberia ser en 1 
 */

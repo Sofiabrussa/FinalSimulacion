@@ -40,7 +40,7 @@ class Simulacion:
     
     #Funcion "procesar_casa"  procesa una casa en la simulación utilizando las funciones de Casa
     def __procesar_casa(self, fila):
-        atencion, fin_atencion, rnd_atencion = self.casa.atencion(self.reloj)
+        atencion, fin_atencion, rnd_atencion, tiempo_no_atencion  = self.casa.atencion(self.reloj)
         genero, rnd_genero = self.casa.genero(atencion)
     
         if atencion:
@@ -54,6 +54,7 @@ class Simulacion:
         else:
             rnd_venta, venta, rnd_suscripciones, cantidad_suscripciones, rndTiempoAtencion, tiempo_atencion, fin_venta = "NO", 0, 0 , 0, 0, 0, 0
             atencion = "NO"
+            tiempo_atencion = tiempo_no_atencion
     
         #Acumuladores
         self.acu_ganancias += self.casa.utilidad * cantidad_suscripciones
