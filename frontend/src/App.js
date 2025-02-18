@@ -170,4 +170,5 @@ export default App;
 
 /* ------------------- VER ----------------------
 - Ver de generar randoms con funcion normal o uniforme
+- Imprimir rta probventas y puntoc
 */

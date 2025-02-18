@@ -7,7 +7,6 @@ class Simulacion:
     #Constructor Simulacion
     def __init__(self):
         self.reloj = 0
-        self.gasto =  0 #Esto lo tengo q instanciar? si es u parametro para que
         self.casa = None
         self.acu_ganancias = 0
         self.acu_costo = 0
@@ -18,7 +17,6 @@ class Simulacion:
 
     #Funcion "Simular" simula el proceso de atencion y venta de las casas en un determinado tiempo 
     def simular(self, prob_atencion, prob_genero, prob_venta_mujer, prob_venta_hombre, utilidad, gasto, tiempo_no_atencion, tiempo_no_venta_min, tiempo_no_venta_max, tiempo_venta_min, tiempo_venta_max, tiempo_extra, cantidad_horas_simular):
-        print(f"Recibiendo parámetros: {locals()}")
         self.prob_atencion = prob_atencion
         self.prob_genero = prob_genero
         self.prob_venta_mujer = prob_venta_mujer
@@ -63,7 +61,7 @@ class Simulacion:
             else:
                 venta = "NO"
         else:
-            rnd_venta, venta, rnd_suscripciones, cantidad_suscripciones, rndTiempoAtencion, tiempo_atencion, fin_venta = "NO", 0, 0 , 0, 0, 0, 0
+            rnd_venta, venta, rnd_suscripciones, cantidad_suscripciones, rndTiempoAtencion, tiempo_atencion, fin_venta = 0, "NO", 0 , 0, 0, 0, 0
             atencion = "NO"
             tiempo_atencion = tiempo_no_atencion
     
@@ -86,8 +84,8 @@ class Simulacion:
         return fin_atencion
     
     def obtener_resultados(self):
-        prob_ventas = round(self.cont_ventas / self.total_filas , 2) if self.total_filas > 0 else 0 #Calcula la proporción de ventas sobre el total de casas procesadas.
-        punto_c = round((self.cont_suscripciones / self.total_filas) * 10000, 0) if self.total_filas > 0 else 0 #Calcula un índice de suscripciones, multiplicándolo por 10,000.
+        prob_ventas = round(self.cont_ventas / self.total_filas , 2) if self.total_filas > 0 else 0 #Punto B
+        punto_c = round((self.cont_suscripciones / self.total_filas) * 10000, 0) if self.total_filas > 0 else 0 #Punto C
 
         df = pd.DataFrame(self.resultados, columns=[
             "Nro Fila", "Reloj", "RND Atencion", "Atencion", "RND Genero", "Genero", 

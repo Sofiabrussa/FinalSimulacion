@@ -50,7 +50,7 @@ class Casa:
         random_para_min_max = random.uniform(0.01, 0.99) 
         
         if venta :
-            random_entre_min_max = (random_para_min_max * (float(self.tiempo_venta_max) - float(self.tiempo_venta_min))) + float(self.tiempo_venta_min)
+            random_entre_min_max = (random_para_min_max * (self.tiempo_venta_max - self.tiempo_venta_min)) + self.tiempo_venta_min
             tiempo_atencion = random_entre_min_max + self.tiempo_extra * cantidad_suscripciones   
         else:
             random_entre_min_max = self.tiempo_no_venta_min + random_para_min_max * (self.tiempo_no_venta_max - self.tiempo_no_venta_min)
