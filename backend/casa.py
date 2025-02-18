@@ -42,7 +42,7 @@ class Casa:
             else:
                 return SEXO.HOMBRE, rnd_genero
         else:
-            return None, 0 
+            return "-", 0 
     
     #Funcion "tiempo_atencion" recibe si hubo venta y en base a eso calcula el tiempo de venta o no venta
     # valor=min+(random×(max−min))
@@ -65,10 +65,12 @@ class Casa:
         venta = False
         cantidad_suscripciones = 0
         rnd_suscripciones = 0
- 
+        
+        print(f"Genero: {genero}, RND Venta: {rnd_venta}, Probabilidad Venta Mujer: {self.prob_venta_mujer}")
         if ((genero == SEXO.MUJER and rnd_venta <= self.prob_venta_mujer) or 
             (genero == SEXO.HOMBRE and rnd_venta <= self.prob_venta_hombre)):
             venta = True             
+            print("Venta realizada")
             cantidad_suscripciones, rnd_suscripciones = self.calcular_suscripciones(genero)
     
         # Calculo el tiempo de atención 
