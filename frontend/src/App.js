@@ -19,12 +19,12 @@ const App = () => {
     cantidad_horas_simular: 8
   });
 
-  const [errors, setErrors] = useState({}); /* Se usa para almacenar los mensajes de error de cada campo. */
-  const [results, setResults] = useState([]); /* Almacena los resultados de la simulación una vez que se ejecuta. */
+  const [errors, setErrors] = useState({}); /* Almaceno errores  */
+  const [results, setResults] = useState([]); /* Almaceno resultados */
 
+  /* Funcion que valida que se ingresen campos correctos */
   const validateField = (name, value) => {
     let error = "";
-
     if (value === "" || isNaN(value)) {
       error = "Este campo no puede estar vacío";
     } else if (name.startsWith("prob")) {
@@ -43,10 +43,10 @@ const App = () => {
     if (name === "tiempo_venta_max" && value <= params.tiempo_venta_min) {
       error = "Debe ser mayor a TIEMPO VENTA MIN";
     }
-
     return error;
   };
 
+  /*Funcion para actualizar los valores de los parametros si es que hay cambios */
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     const parsedValue = parseFloat(value);
@@ -63,8 +63,10 @@ const App = () => {
     }));
   };
 
+  /*Funcion para la simulacion y envio de datos al back */
   const handleSimulate = async () => {
     const newErrors = {};
+
     Object.entries(params).forEach(([key, value]) => {
       const error = validateField(key, value);
       if (error) newErrors[key] = error;
@@ -74,7 +76,6 @@ const App = () => {
       setErrors(newErrors);
       return;
     }
-    console.log("Params enviados al backend:", params);
 
     try {
       const response = await fetch('http://localhost:8000/simulacion', {

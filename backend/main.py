@@ -1,9 +1,7 @@
-import pandas as pd
 from simulacion import Simulacion
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-#PARA EJECUTAR EL BACK: uvicorn main:app --reload
 
 
 app = FastAPI()
@@ -17,7 +15,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# permite definir el formato esperado de los datos en la solicitud
+#Defino el formato esperado de los datos en la solicitud
 class SimulacionRequest(BaseModel):
     prob_atencion: float
     prob_genero: float
