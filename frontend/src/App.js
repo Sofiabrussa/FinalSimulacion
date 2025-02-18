@@ -74,6 +74,7 @@ const App = () => {
       setErrors(newErrors);
       return;
     }
+    console.log("Params enviados al backend:", params);
 
     try {
       const response = await fetch('http://localhost:8000/simulacion', {
