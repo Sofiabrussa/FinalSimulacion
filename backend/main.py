@@ -38,21 +38,20 @@ async def simulate(request: SimulacionRequest):
     try:
         sim = Simulacion()
         
-    # Ahora pasas el diccionario casa_params al método simular
         sim.simular(
-            cantidad_horas_simular=request.cantidad_horas_simular,
-            gasto=request.gasto,
             prob_atencion=request.prob_atencion,
             prob_genero=request.prob_genero,
             prob_venta_mujer=request.prob_venta_mujer,
             prob_venta_hombre=request.prob_venta_hombre,
             utilidad=request.utilidad,
+            gasto=request.gasto,
             tiempo_no_atencion=request.tiempo_no_atencion,
             tiempo_no_venta_min=request.tiempo_no_venta_min,
             tiempo_no_venta_max=request.tiempo_no_venta_max,
-            tiempo_venta_min= request.tiempo_venta_min,
-            tiempo_venta_max= request.tiempo_venta_max,
-            tiempo_extra=request.tiempo_extra
+            tiempo_venta_min=request.tiempo_venta_min,
+            tiempo_venta_max=request.tiempo_venta_max,
+            tiempo_extra=request.tiempo_extra,
+            cantidad_horas_simular=request.cantidad_horas_simular,
         )
 
         df, prob_ventas, punto_c = sim.obtener_resultados()

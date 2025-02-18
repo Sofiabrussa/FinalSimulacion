@@ -7,7 +7,7 @@ class Simulacion:
     #Constructor Simulacion
     def __init__(self):
         self.reloj = 0
-        self.gasto = 0
+        self.gasto =  0 #Esto lo tengo q instanciar? si es u parametro para que
         self.casa = None
         self.acu_ganancias = 0
         self.acu_costo = 0
@@ -17,32 +17,33 @@ class Simulacion:
         self.total_filas = 0
 
     #Funcion "Simular" simula el proceso de atencion y venta de las casas en un determinado tiempo 
-    def simular(self, cantidad_horas_simular, gasto, prob_atencion, prob_genero, prob_venta_mujer, prob_venta_hombre, utilidad, tiempo_no_atencion, tiempo_no_venta_min, tiempo_no_venta_max, tiempo_venta_min, tiempo_venta_max, tiempo_extra):
+    def simular(self, prob_atencion, prob_genero, prob_venta_mujer, prob_venta_hombre, utilidad, gasto, tiempo_no_atencion, tiempo_no_venta_min, tiempo_no_venta_max, tiempo_venta_min, tiempo_venta_max, tiempo_extra, cantidad_horas_simular):
         print(f"Recibiendo parámetros: {locals()}")
-        self.gasto = gasto
         self.prob_atencion = prob_atencion
         self.prob_genero = prob_genero
         self.prob_venta_mujer = prob_venta_mujer
         self.prob_venta_hombre = prob_venta_hombre
         self.utilidad = utilidad
+        self.gasto = gasto
         self.tiempo_no_atencion = tiempo_no_atencion
         self.tiempo_no_venta_min = tiempo_no_venta_min
         self.tiempo_no_venta_max = tiempo_no_venta_max
         self.tiempo_venta_min = tiempo_venta_min
         self.tiempo_venta_max = tiempo_venta_max
         self.tiempo_extra = tiempo_extra
+        self.cantidad_horas_simular = cantidad_horas_simular
         
         self.reloj = 0
         fila = 1
         fin_sim = cantidad_horas_simular * 60  
         #Proceso la primer casa
-        self.casa = Casa() 
+        self.casa = Casa(prob_atencion, prob_genero, prob_venta_mujer, prob_venta_hombre, utilidad, gasto, tiempo_no_atencion, tiempo_no_venta_min, tiempo_no_venta_max, tiempo_venta_min, tiempo_venta_max, tiempo_extra, cantidad_horas_simular) 
         self.reloj = self.__procesar_casa(fila)
 
         while self.reloj < fin_sim:
             fila += 1
             # Nueva casa en cada iteración
-            self.casa = Casa()
+            self.casa = Casa(prob_atencion, prob_genero, prob_venta_mujer, prob_venta_hombre, utilidad, gasto, tiempo_no_atencion, tiempo_no_venta_min, tiempo_no_venta_max, tiempo_venta_min, tiempo_venta_max, tiempo_extra, cantidad_horas_simular)
             self.reloj = self.__procesar_casa(fila)
 
         self.total_filas = fila
