@@ -89,16 +89,16 @@ class Simulacion:
         punto_c = round((self.cont_suscripciones / self.total_filas) * 10000, 0) if self.total_filas > 0 else 0 #Punto C
 
         df = pd.DataFrame(self.resultados, columns=[
-            "Nro Fila", "Reloj", "RND Atencion", "Atencion", "RND Genero", "Genero", 
-            "RND Tiempo Atencion", "Tiempo Atención", "Fin Atención", "RND Venta", "Venta", 
-            "RND Cantidad", "Cantidad", "Ganancia", "Costo", "Ganancia Acumulada", 
-            "Costo Acumulado", "Contador Visitas", "Contador Ventas", "Contador Suscripciones"
+            "Nro Fila", "Reloj (min)", "RND Atención", "Atención", "RND Género", "Género", 
+            "RND Tiempo Atención", "Tiempo Atención (min) ", "Fin Atención (min)", "RND Venta", "Venta", 
+            "RND Cantidad", "Cantidad Suscripciones", "Utilidad ($) ", "Costo ($) ", "Utilidad Acumulada ($) ", 
+            "Costo Acumulado ($) ", "Contador Visitas", "Contador Ventas", "Contador Suscripciones"
         ])
         
         # Reemplazar valores fuera de rango o NaN
         df = df.replace([np.inf, -np.inf], np.nan)
         df = df.fillna(0)
-        df["Genero"] = df["Genero"].fillna("-")
+        df["Género"] = df["Género"].fillna("-")
 
         return df, prob_ventas, punto_c
 

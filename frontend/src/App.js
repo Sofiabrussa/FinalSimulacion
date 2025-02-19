@@ -105,7 +105,8 @@ const App = () => {
     <div className="App"></div>
       {/* Titulo */}
       <Container className="p-4">
-        <h1 className="text-center mb-4">Final Simulación</h1>
+        <h1 className="text-center mb-4">Final Simulación </h1>
+        <h3 className="text-center mb-4"> Brussa Osella Sofia - 82137 </h3>
         {/* Campos */}
         <Form>
           <Row className="g-3">
@@ -142,7 +143,7 @@ const App = () => {
               <Spinner animation="border" size="sm" /> Simulando...
             </>
           ) : (
-            "Simulación"
+            "Simular"
           )}
         </Button>
       </Container>
