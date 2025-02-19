@@ -60,4 +60,4 @@ async def simulate(request: SimulacionRequest):
         }
 
     except Exception as e:
-        return {"error": str(e)}    
+        return {"error": str(e)}
