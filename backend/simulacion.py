@@ -16,7 +16,8 @@ class Simulacion:
         self.total_filas = 0
 
     #Funcion "Simular" simula el proceso de atencion y venta de las casas en un determinado tiempo 
-    def simular(self, prob_atencion, prob_genero, prob_venta_mujer, prob_venta_hombre, utilidad, gasto, tiempo_no_atencion, tiempo_no_venta_min, tiempo_no_venta_max, tiempo_venta_min, tiempo_venta_max, tiempo_extra, cantidad_horas_simular):
+    def simular(self, prob_atencion: float, prob_genero: float, prob_venta_mujer: float, prob_venta_hombre: float, utilidad: float, gasto: float, tiempo_no_atencion: float, 
+                tiempo_no_venta_min: float, tiempo_no_venta_max: float, tiempo_venta_min: float, tiempo_venta_max: float, tiempo_extra: float, cantidad_horas_simular: int):
         self.prob_atencion = prob_atencion
         self.prob_genero = prob_genero
         self.prob_venta_mujer = prob_venta_mujer

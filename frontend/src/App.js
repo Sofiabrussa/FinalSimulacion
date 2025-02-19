@@ -1,6 +1,6 @@
 import { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Form, Row, Col, Button, Container, Table } from "react-bootstrap";
+import { Form, Row, Col, Button, Container, Table, Spinner } from "react-bootstrap";
 
 const App = () => {
   const [params, setParams] = useState({
@@ -23,7 +23,7 @@ const App = () => {
   const [results, setResults] = useState([]); 
   const [probVentas, setProbVentas] = useState(null);
   const [puntoC, setPuntoC] = useState(null);
-
+  const [loading, setLoading] = useState(false);
 
   /* Funcion que valida que se ingresen campos correctos */
   const validateField = (name, value) => {
@@ -80,6 +80,7 @@ const App = () => {
       return;
     }
 
+    setLoading(true)
     try {
       const response = await fetch('http://localhost:8000/simulacion', {
         method: 'POST',
@@ -94,7 +95,8 @@ const App = () => {
       setPuntoC(data.punto_c);
     } catch (error) {
       console.error('Error:', error);
-    }
+    } finally {
+      setLoading(false); }
   };
 
   /*Renderizamos*/
@@ -133,8 +135,15 @@ const App = () => {
         <Button
           onClick={handleSimulate}
           variant="primary"
-          size="lg">
-          Simulación
+          size="lg"
+          disabled={loading}>
+          {loading ? (
+            <>
+              <Spinner animation="border" size="sm" /> Simulando...
+            </>
+          ) : (
+            "Simulación"
+          )}
         </Button>
       </Container>
 
@@ -168,8 +177,8 @@ const App = () => {
               </tbody>
             </Table>
             <h2>Resultados</h2>
-            <p>Probabilidad de ventas: {probVentas}</p>
-            <p>Punto c: {puntoC}</p>
+            <p>Probabilidad de ventas para el vendedor: {probVentas*100}% </p>
+            <p>Objetivo de  suscripciones para 10000 visitas: {puntoC} suscripciones</p>
           </Container>
         )
       }
