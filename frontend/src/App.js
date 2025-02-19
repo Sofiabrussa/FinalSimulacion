@@ -97,11 +97,14 @@ const App = () => {
     }
   };
 
+  /*Renderizamos*/
   return (
     <>
+    <div className="App"></div>
+      {/* Titulo */}
       <Container className="p-4">
         <h1 className="text-center mb-4">Final Simulación</h1>
-
+        {/* Campos */}
         <Form>
           <Row className="g-3">
             {Object.entries(params).map(([key, value]) => (
@@ -125,7 +128,7 @@ const App = () => {
           </Row>
         </Form>
       </Container>
-
+      {/* Boton */}
       <Container className="text-center mb-4">
         <Button
           onClick={handleSimulate}
@@ -135,18 +138,19 @@ const App = () => {
         </Button>
       </Container>
 
+      {/* Grilla */}
       {
         results.length > 0 && (
           <Container fluid className="overflow-auto rounded border p-3">
             <Table striped bordered hover responsive>
               <thead>
-                <tr>
+                <tr> {/* Nombre columnas */}
                   {Object.keys(results[0]).map((key) => (
                     <th key={key}>{key}</th>
                   ))}
                 </tr>
               </thead>
-              <tbody>
+              <tbody> {/* Filas */}
                 {results.map((row, index) => (
                   <tr key={index}>
                     {Object.keys(row).map((key) => {
@@ -154,7 +158,7 @@ const App = () => {
                       return (
                         <td key={key}>
                           {typeof value === "number" && !Number.isInteger(value)
-                            ? value.toFixed(2).replace(".", ",") // Trunca a 2 decimales y cambia . por ,
+                            ? value.toFixed(2).replace(".", ",") 
                             : value}
                         </td>
                       );
