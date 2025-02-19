@@ -52,7 +52,6 @@ class Simulacion:
         atencion, fin_atencion, rnd_atencion, tiempo_no_atencion  = self.casa.atencion(self.reloj)
         genero, rnd_genero = self.casa.genero(atencion)
     
-        print(f"Atención: {atencion}")
         if atencion:
             rnd_venta, venta, rnd_suscripciones, cantidad_suscripciones, rndTiempoAtencion, tiempo_atencion, fin_venta = self.casa.venta(fin_atencion, genero, rnd_genero)
             fin_atencion = fin_venta 
@@ -94,15 +93,6 @@ class Simulacion:
             "RND Cantidad", "Cantidad", "Ganancia", "Costo", "Ganancia Acumulada", 
             "Costo Acumulado", "Contador Visitas", "Contador Ventas", "Contador Suscripciones"
         ])
-        
-        pd.set_option('display.max_rows', None)  # Muestra todas las filas
-        pd.set_option('display.max_columns', None)  # Muestra todas las columnas
-        pd.set_option('display.width', None)  # Ajusta el ancho de la pantalla
-        pd.set_option('display.max_colwidth', None)  # No limita el ancho de las columnas
-        print("Últimas filas del dataframe antes de enviarlo:")
-        print(df.tail())
-
-        print(df)
         
         # Reemplazar valores fuera de rango o NaN
         df = df.replace([np.inf, -np.inf], np.nan)

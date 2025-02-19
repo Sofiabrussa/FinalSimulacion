@@ -16,11 +16,14 @@ const App = () => {
     tiempo_venta_min: 15,
     tiempo_venta_max: 20,
     tiempo_extra: 4,
-    cantidad_horas_simular: 8
+    cantidad_horas_simular: 480
   });
 
-  const [errors, setErrors] = useState({}); /* Almaceno errores  */
-  const [results, setResults] = useState([]); /* Almaceno resultados */
+  const [errors, setErrors] = useState({}); 
+  const [results, setResults] = useState([]); 
+  const [probVentas, setProbVentas] = useState(null);
+  const [puntoC, setPuntoC] = useState(null);
+
 
   /* Funcion que valida que se ingresen campos correctos */
   const validateField = (name, value) => {
@@ -87,6 +90,8 @@ const App = () => {
       });
       const data = await response.json();
       setResults(Array.isArray(data.results) ? data.results : []);
+      setProbVentas(data.prob_ventas); 
+      setPuntoC(data.punto_c);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -158,6 +163,9 @@ const App = () => {
                 ))}
               </tbody>
             </Table>
+            <h2>Resultados</h2>
+            <p>Probabilidad de ventas: {probVentas}</p>
+            <p>Punto c: {puntoC}</p>
           </Container>
         )
       }
@@ -167,9 +175,3 @@ const App = () => {
 
 export default App;
 
-
-
-/* ------------------- VER ----------------------
-- Ver de generar randoms con funcion normal o uniforme
-- Imprimir rta probventas y puntoc
-*/
