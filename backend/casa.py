@@ -59,19 +59,20 @@ class Casa:
         return random_para_min_max, tiempo_atencion 
    
    #Funcion "venta" recibe el reloj actual, calcula en base a si es hombre o mujer si se concreta o no la venta 
-    def venta(self, reloj: int):
-        genero, rnd_genero = self.genero(True)   
+    def venta(self, reloj: int, genero, rnd_genero):  
         rnd_venta = random.uniform(0.01, 0.99)
         venta = False
         cantidad_suscripciones = 0
         rnd_suscripciones = 0
         
-        print(f"Genero: {genero}, RND Venta: {rnd_venta}, Probabilidad Venta Mujer: {self.prob_venta_mujer}")
-        if ((genero == SEXO.MUJER and rnd_venta <= self.prob_venta_mujer) or 
-            (genero == SEXO.HOMBRE and rnd_venta <= self.prob_venta_hombre)):
-            venta = True             
-            print("Venta realizada")
-            cantidad_suscripciones, rnd_suscripciones = self.calcular_suscripciones(genero)
+        if genero == SEXO.MUJER:
+            if rnd_venta <= self.prob_venta_mujer:
+                venta = True
+                cantidad_suscripciones, rnd_suscripciones = self.calcular_suscripciones(genero)
+        elif genero == SEXO.HOMBRE:
+            if rnd_venta <= self.prob_venta_hombre:
+                venta = True
+                cantidad_suscripciones, rnd_suscripciones = self.calcular_suscripciones(genero)
     
         # Calculo el tiempo de atención 
         rndTiempoAtencion, tiempo_atencion = self.tiempo_atencion(venta, cantidad_suscripciones)
